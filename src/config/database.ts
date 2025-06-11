@@ -6,7 +6,7 @@ const poolConfig = {
     connectionString: process.env.DATABASE_URL,
     ...(isProduction && {
         ssl: {
-            rejectUnauthorized: false 
+            rejectUnauthorized: true 
         }
     })
 };
