@@ -8,10 +8,10 @@
     "dev": "nodemon --exec ts-node server.ts",
     "build": "tsc",
     "watch": "tsc --watch",
-    "migrate:make": "npx pg-migrate create", 
-    "migrate:up": "npx pg-migrate up",       
-    "migrate:down": "npx pg-migrate down",   
-    "migrate:redo": "npx pg-migrate redo",   
+    "migrate:make": "npx pg-migrate create",
+    "migrate:up": "npx pg-migrate up",
+    "migrate:down": "npx pg-migrate down",
+    "migrate:redo": "npx pg-migrate redo",
     "migrate:fresh": "npx pg-migrate down --all && npx pg-migrate up"
   },
   "dependencies": {
