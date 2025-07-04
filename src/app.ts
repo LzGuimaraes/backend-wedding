@@ -8,11 +8,23 @@ const app = express();
 
 // --- CONFIGURAÇÃO DO CORS ---
 
-const corsOptions = {
-  origin: [
-    "https://wedding-front-n2nw-73ysixo5l-lzguimaraes-projects.vercel.app",
-    "https://wedding-front-n2nw.vercel.app",
-  ],
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    // Permitir chamadas sem origem (como de ferramentas internas ou cURL)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(
+        new Error(
+          `CORS bloqueado para origem: ${origin}. Configure ALLOWED_ORIGINS.`
+        )
+      );
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
