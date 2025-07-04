@@ -9,4 +9,7 @@ router.post('/confirm', guestController.confirmPresence);
 // Rota para listar convidados confirmados (GET /api/guests/confirmed)
 router.get('/confirmed', guestController.getConfirmedGuests);
 
+// Rota para listar convidados NÃO confirmados (GET /api/guests/unconfirmed)
+router.get('/unconfirmed', guestController.getUnconfirmedGuests);
+
 export default router;
