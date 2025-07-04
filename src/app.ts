@@ -9,7 +9,8 @@ const app = express();
 // --- CONFIGURAÇÃO DO CORS ---
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin:
+    "https://wedding-front-n2nw-73ysixo5l-lzguimaraes-projects.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
