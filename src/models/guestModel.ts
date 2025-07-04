@@ -40,7 +40,7 @@ export const createGuest = async (
  */
 export const findConfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
   const result = await pool.query(
-    "SELECT full_name FROM guests WHERE is_confirmed = TRUE ORDER BY full_name ASC"
+    "SELECT id, full_name, email FROM guests WHERE is_confirmed = TRUE ORDER BY full_name ASC"
   );
   return result.rows;
 };
@@ -50,7 +50,7 @@ export const findConfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
  */
 export const findUnconfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
   const result = await pool.query(
-    "SELECT full_name FROM guests WHERE is_confirmed = FALSE ORDER BY full_name ASC"
+    "SELECT id, full_name, email FROM guests WHERE is_confirmed = FALSE ORDER BY full_name ASC"
   );
   return result.rows;
 };

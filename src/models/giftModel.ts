@@ -36,6 +36,14 @@ export const findAvailableGifts = async (): Promise<Gift[]> => {
 };
 
 /**
+ * Busca todos os presentes (disponíveis, reservados e comprados)
+ */
+export const findAllGifts = async (): Promise<Gift[]> => {
+  const result = await pool.query("SELECT * FROM gifts ORDER BY name ASC");
+  return result.rows;
+};
+
+/**
  * Reserva um presente para um convidado
  */
 export const reserveGift = async (
