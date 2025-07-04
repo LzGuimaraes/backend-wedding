@@ -42,3 +42,11 @@ export const findConfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
   );
   return result.rows;
 };
+
+/**
+ * Busca todos os convidados Não confirmados
+ */
+export const findUnconfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
+    const result = await pool.query('SELECT full_name FROM guests WHERE is_confirmed = FALSE ORDER BY full_name ASC');
+    return result.rows;
+};
