@@ -1,5 +1,5 @@
 // Importando a instância do pool de conexão do banco de dados configurada em src/config/database.ts
-import pool from "../config/database"; // Certifique-se que database.ts exporta default pool
+import pool from "../config/database";
 
 // Interface para o objeto de convidado
 interface Guest {
@@ -13,7 +13,9 @@ interface Guest {
 
 // Interface para convidados confirmados
 interface ConfirmedGuest {
+  id: number;
   full_name: string;
+  email: string | null;
 }
 
 /**
@@ -47,6 +49,8 @@ export const findConfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
  * Busca todos os convidados Não confirmados
  */
 export const findUnconfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
-    const result = await pool.query('SELECT full_name FROM guests WHERE is_confirmed = FALSE ORDER BY full_name ASC');
-    return result.rows;
+  const result = await pool.query(
+    "SELECT full_name FROM guests WHERE is_confirmed = FALSE ORDER BY full_name ASC"
+  );
+  return result.rows;
 };
