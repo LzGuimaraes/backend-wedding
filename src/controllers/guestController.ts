@@ -29,3 +29,13 @@ export const getConfirmedGuests = async (req: Request, res: Response): Promise<v
         res.status(500).json({ error: 'Internal server error fetching guests.' });
     }
 };
+
+export const getUnconfirmedGuests = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const unconfirmedGuests = await guestModel.findUnconfirmedGuests();
+        res.status(200).json(unconfirmedGuests);
+    } catch (error) {
+        console.error('Error fetching unconfirmed guests:', error);
+        res.status(500).json({ error: 'Internal server error fetching unconfirmed guests.' });
+    }
+};
