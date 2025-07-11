@@ -1,4 +1,4 @@
-import pool from "../config/database"; // Certifique-se que database.ts exporta default pool
+import pool from "../config/database";
 
 // Interface para o objeto de presente
 interface Gift {
@@ -20,7 +20,6 @@ export const createGift = async (
     "INSERT INTO gifts (name, price, status) VALUES ($1, $2, $3) RETURNING *",
     [name, price, "available"]
   );
-  // Adapta o retorno para garantir que o tipo Gift seja completo (opcional, dependendo do retorno exato do DB)
   return result.rows[0];
 };
 
@@ -41,6 +40,14 @@ export const findAvailableGifts = async (): Promise<Gift[]> => {
 export const findAllGifts = async (): Promise<Gift[]> => {
   const result = await pool.query("SELECT * FROM gifts ORDER BY name ASC");
   return result.rows;
+};
+
+/**
+ * Busca um presente por ID
+ */
+export const findGiftById = async (id: number): Promise<Gift | null> => {
+  const result = await pool.query("SELECT * FROM gifts WHERE id = $1", [id]);
+  return result.rows[0] || null;
 };
 
 /**
@@ -82,3 +89,5 @@ export const confirmGiftPurchase = async (
 
   return result.rows[0];
 };
+
+export type { Gift };

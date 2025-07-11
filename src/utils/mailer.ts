@@ -27,7 +27,7 @@ export const sendConfirmationNotification = async (
 ): Promise<void> => {
   const transporter = createTransporter();
 
-  const { fullName, email, numCompanions, message } = guestData;
+  const { fullName, email, message } = guestData;
 
   const mailOptions = {
     from: `"Casamento" <${process.env.EMAIL_USER}>`,
@@ -39,7 +39,6 @@ export const sendConfirmationNotification = async (
         <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
           <p><strong>Nome:</strong> ${fullName}</p>
           ${email ? `<p><strong>Email:</strong> ${email}</p>` : ""}
-          <p><strong>Convidados adicionais:</strong> ${numCompanions || 0}</p>
           <p><strong>Mensagem:</strong> ${message || "Nenhuma"}</p>
         </div>
         <p style="text-align: center; color: #666; font-size: 12px;">
@@ -72,7 +71,7 @@ export const sendConfirmationToGuest = async (
   }
 
   const transporter = createTransporter();
-  const { fullName, email, numCompanions } = guestData;
+  const { fullName, email } = guestData;
 
   const mailOptions = {
     from: `"Casamento" <${process.env.EMAIL_USER}>`,
@@ -87,7 +86,6 @@ export const sendConfirmationToGuest = async (
           <p><strong>Detalhes da confirmação:</strong></p>
           <ul>
             <li>Nome: ${fullName}</li>
-            <li>Convidados adicionais: ${numCompanions || 0}</li>
           </ul>
           <p>Aguardamos você em nosso grande dia!</p>
         </div>
