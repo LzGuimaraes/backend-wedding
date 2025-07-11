@@ -108,11 +108,28 @@ export const sendConfirmationToGuest = async (
 // Interface para dados do presente no email
 interface GiftEmailData {
   giftName: string;
-  giftPrice: number;
+  giftPrice: number | string; // Aceita tanto number quanto string
   guestName: string;
   guestEmail?: string;
   action: "reserva" | "compra";
 }
+
+/**
+ * Função auxiliar para converter preço para número e formatar
+ */
+const formatPrice = (price: number | string): string => {
+  // Converte para número se for string
+  const numPrice = typeof price === "string" ? parseFloat(price) : price;
+
+  // Verifica se é um número válido
+  if (isNaN(numPrice)) {
+    console.warn(`Preço inválido recebido: ${price}, usando 0.00`);
+    return "0,00";
+  }
+
+  // Formata o preço para o padrão brasileiro
+  return numPrice.toFixed(2).replace(".", ",");
+};
 
 /**
  * Envia email de notificação para reserva ou compra de presente
@@ -126,6 +143,9 @@ export const sendGiftReservationNotification = async (
   const actionText = action === "reserva" ? "Reservou" : "Comprou";
   const actionColor = action === "reserva" ? "#ff9500" : "#28a745";
 
+  // Formata o preço de forma segura
+  const formattedPrice = formatPrice(giftPrice);
+
   const mailOptions = {
     from: `"Casamento" <${process.env.EMAIL_USER}>`,
     to: process.env.NOTIFY_EMAIL,
@@ -136,7 +156,7 @@ export const sendGiftReservationNotification = async (
         <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid ${actionColor};">
           <h3 style="color: ${actionColor}; margin-top: 0;">Informações do Presente:</h3>
           <p><strong>Presente:</strong> ${giftName}</p>
-          <p><strong>Valor:</strong> R$ ${giftPrice.toFixed(2)}</p>
+          <p><strong>Valor:</strong> R$ ${formattedPrice}</p>
           <p><strong>Ação:</strong> ${actionText}</p>
           
           <h3 style="color: #333; margin-top: 20px;">Informações do Convidado:</h3>
