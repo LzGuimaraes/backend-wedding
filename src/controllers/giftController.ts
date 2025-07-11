@@ -50,7 +50,9 @@ export const reserveGift = async (
         action: "reserva",
       });
 
-      console.log(`Email de reserva enviado com sucesso para ${gift.name}`);
+      console.log(
+        `Email de reserva enviado com sucesso - Presente: ${gift.name} - Convidado: ${guestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
+      );
     } catch (emailError) {
       console.error("Erro ao enviar email de reserva:", emailError);
       // Não impede a resposta de sucesso, mas loga o erro
@@ -112,7 +114,9 @@ export const confirmPurchase = async (
         action: "compra",
       });
 
-      console.log(`Email de compra enviado com sucesso para ${gift.name}`);
+      console.log(
+        `Email de compra enviado com sucesso - Presente: ${gift.name} - Convidado: ${guestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
+      );
     } catch (emailError) {
       console.error("Erro ao enviar email de compra:", emailError);
       // Não impede a resposta de sucesso, mas loga o erro

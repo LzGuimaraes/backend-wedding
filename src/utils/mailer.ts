@@ -172,7 +172,9 @@ export const sendGiftReservationNotification = async (
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`Email de notificação de ${action} enviado para ${giftName}`);
+    console.log(
+      `Email de notificação de ${action} enviado para ${process.env.NOTIFY_EMAIL} - Presente: ${giftName} - Convidado: ${guestName}`
+    );
   } catch (error) {
     console.error(`Erro ao enviar email de notificação de ${action}:`, error);
     throw new Error(`Falha ao enviar email de notificação de ${action}`);
