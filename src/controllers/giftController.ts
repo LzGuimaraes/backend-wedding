@@ -29,7 +29,6 @@ export const reserveGift = async (
   }
 
   try {
-    // Buscar dados do presente antes de reservar
     const giftData = await GiftModel.findGiftById(giftId);
 
     if (!giftData) {
@@ -37,25 +36,24 @@ export const reserveGift = async (
       return;
     }
 
-    // Reservar o presente
     const gift = await GiftModel.reserveGift(giftId, guestId);
 
-    // Enviar email de notificação de reserva
+    const displayGuestName = `Convidado ${guestName?.trim() || "Anônimo"}`;
+
     try {
       await emailService.sendGiftReservationNotification({
         giftName: gift.name,
         giftPrice: gift.price,
-        guestName: guestName || `Convidado ${guestId}`,
+        guestName: displayGuestName,
         guestEmail: guestEmail || undefined,
         action: "reserva",
       });
 
       console.log(
-        `Email de reserva enviado com sucesso - Presente: ${gift.name} - Convidado: ${guestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
+        `Email de reserva enviado com sucesso - Presente: ${gift.name} - Convidado: ${displayGuestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
       );
     } catch (emailError) {
       console.error("Erro ao enviar email de reserva:", emailError);
-      // Não impede a resposta de sucesso, mas loga o erro
     }
 
     res.json({
@@ -93,7 +91,6 @@ export const confirmPurchase = async (
   }
 
   try {
-    // Buscar dados do presente antes de confirmar compra
     const giftData = await GiftModel.findGiftById(giftId);
 
     if (!giftData) {
@@ -101,25 +98,24 @@ export const confirmPurchase = async (
       return;
     }
 
-    // Confirmar a compra do presente
     const gift = await GiftModel.confirmGiftPurchase(giftId, guestId);
 
-    // Enviar email de notificação de compra
+    const displayGuestName = `Convidado ${guestName?.trim() || "Anônimo"}`;
+
     try {
       await emailService.sendGiftReservationNotification({
         giftName: gift.name,
         giftPrice: gift.price,
-        guestName: guestName || `Convidado ${guestId}`,
+        guestName: displayGuestName,
         guestEmail: guestEmail || undefined,
         action: "compra",
       });
 
       console.log(
-        `Email de compra enviado com sucesso - Presente: ${gift.name} - Convidado: ${guestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
+        `Email de compra enviado com sucesso - Presente: ${gift.name} - Convidado: ${displayGuestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
       );
     } catch (emailError) {
       console.error("Erro ao enviar email de compra:", emailError);
-      // Não impede a resposta de sucesso, mas loga o erro
     }
 
     res.json({
