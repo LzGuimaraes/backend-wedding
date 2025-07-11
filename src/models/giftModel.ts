@@ -91,3 +91,13 @@ export const confirmGiftPurchase = async (
 };
 
 export type { Gift };
+
+export const findGuestById = async (
+  id: number
+): Promise<{ full_name: string } | null> => {
+  const result = await pool.query(
+    "SELECT full_name FROM guests WHERE id = $1",
+    [id]
+  );
+  return result.rows[0] || null;
+};

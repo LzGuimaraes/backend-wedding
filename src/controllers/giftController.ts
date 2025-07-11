@@ -28,14 +28,6 @@ export const reserveGift = async (
     return;
   }
 
-  // Nome final do convidado
-  const finalGuestName =
-    guestName && guestName.trim().length > 0
-      ? guestName.trim()
-      : guestId
-      ? `Convidado ${guestId}`
-      : "Convidado Anônimo";
-
   try {
     const giftData = await GiftModel.findGiftById(giftId);
     if (!giftData) {
@@ -45,18 +37,24 @@ export const reserveGift = async (
 
     const gift = await GiftModel.reserveGift(giftId, guestId);
 
-    // Envia e-mail
+    // Se não enviaram o nome, busca do banco
+    let resolvedGuestName = guestName?.trim();
+    if (!resolvedGuestName) {
+      const guest = await GiftModel.findGuestById(guestId);
+      resolvedGuestName = guest?.full_name || `Convidado ${guestId}`;
+    }
+
     try {
       await emailService.sendGiftReservationNotification({
         giftName: gift.name,
         giftPrice: gift.price,
-        guestName: finalGuestName,
+        guestName: resolvedGuestName,
         guestEmail: guestEmail || undefined,
         action: "reserva",
       });
 
       console.log(
-        `Email de reserva enviado com sucesso - Presente: ${gift.name} - Convidado: ${finalGuestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
+        `Email de reserva enviado com sucesso - Presente: ${gift.name} - Convidado: ${resolvedGuestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
       );
     } catch (emailError) {
       console.error("Erro ao enviar email de reserva:", emailError);
@@ -94,13 +92,6 @@ export const confirmPurchase = async (
     return;
   }
 
-  const finalGuestName =
-    guestName && guestName.trim().length > 0
-      ? guestName.trim()
-      : guestId
-      ? `Convidado ${guestId}`
-      : "Convidado Anônimo";
-
   try {
     const giftData = await GiftModel.findGiftById(giftId);
     if (!giftData) {
@@ -110,17 +101,24 @@ export const confirmPurchase = async (
 
     const gift = await GiftModel.confirmGiftPurchase(giftId, guestId);
 
+    // Se não enviaram o nome, busca do banco
+    let resolvedGuestName = guestName?.trim();
+    if (!resolvedGuestName) {
+      const guest = await GiftModel.findGuestById(guestId);
+      resolvedGuestName = guest?.full_name || `Convidado ${guestId}`;
+    }
+
     try {
       await emailService.sendGiftReservationNotification({
         giftName: gift.name,
         giftPrice: gift.price,
-        guestName: finalGuestName,
+        guestName: resolvedGuestName,
         guestEmail: guestEmail || undefined,
         action: "compra",
       });
 
       console.log(
-        `Email de compra enviado com sucesso - Presente: ${gift.name} - Convidado: ${finalGuestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
+        `Email de compra enviado com sucesso - Presente: ${gift.name} - Convidado: ${resolvedGuestName} - Email notificação: ${process.env.NOTIFY_EMAIL}`
       );
     } catch (emailError) {
       console.error("Erro ao enviar email de compra:", emailError);
