@@ -31,7 +31,7 @@ export const sendConfirmationNotification = async (
 
   const mailOptions = {
     from: `"Casamento" <${process.env.EMAIL_USER}>`,
-    to: process.env.NOTIFY_EMAIL, // pode conter múltiplos e-mails separados por vírgula
+    to: process.env.NOTIFY_EMAIL,
     subject: "Nova confirmação de presença",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -101,14 +101,13 @@ export const sendConfirmationToGuest = async (
     console.log(`Email de confirmação enviado para ${email}`);
   } catch (error) {
     console.error("Erro ao enviar email de confirmação ao convidado:", error);
-    // Não lança erro aqui para não interromper o processo principal
   }
 };
 
 // Interface para dados do presente no email
 interface GiftEmailData {
   giftName: string;
-  giftPrice: number | string; // Aceita tanto number quanto string
+  giftPrice: number | string;
   guestName: string;
   guestEmail?: string;
   action: "reserva" | "compra";
@@ -118,16 +117,13 @@ interface GiftEmailData {
  * Função auxiliar para converter preço para número e formatar
  */
 const formatPrice = (price: number | string): string => {
-  // Converte para número se for string
   const numPrice = typeof price === "string" ? parseFloat(price) : price;
 
-  // Verifica se é um número válido
   if (isNaN(numPrice)) {
     console.warn(`Preço inválido recebido: ${price}, usando 0.00`);
     return "0,00";
   }
 
-  // Formata o preço para o padrão brasileiro
   return numPrice.toFixed(2).replace(".", ",");
 };
 
