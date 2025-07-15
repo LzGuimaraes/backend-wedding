@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import guestRoutes from "./routes/guestRoutes";
-import donationRoutes from "./routes/donationRoutes";
 import giftRoutes from "./routes/giftRoutes";
 
 const app = express();
@@ -36,7 +35,6 @@ app.use(express.json());
 
 // Rotas da API
 app.use("/api/guests", guestRoutes);
-app.use("/api/donations", donationRoutes);
 app.use("/api/gifts", giftRoutes);
 
 app.get("/", (req: Request, res: Response) => {
